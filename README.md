@@ -40,7 +40,8 @@ Users can pay for one off invoices or subscribe for unlimited use via stripe.
  
     Initial project file structure should look like this
 
-    tinyinvoice/
+```text
+tinyinvoice/
 ├── app.py # Core Flask app (engine room)
 ├── config.py # Configuration and environment variables
 ├── models.py # Database models
@@ -64,6 +65,7 @@ Users can pay for one off invoices or subscribe for unlimited use via stripe.
 ├── requirements.txt # Python dependencies
 ├── README.md
 └── venv/ # Virtual environment
+```
 
 ## Setup & Installation
 
@@ -115,5 +117,6 @@ You should see a confirmation page "TinyInvoice Main Blueprint"
   |Terminal can’t activate venv|Check you created it in the project folder: python3 -m venv venv|
   |Permission denied when creating repo on external drive|Change folder ownership: sudo chown -R $USER:$USER /path/to/folder|
   
+
 
 

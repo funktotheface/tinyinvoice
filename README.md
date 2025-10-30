@@ -7,7 +7,7 @@ client management and invoice templates.
 
 Users can pay for one off invoices or subscribe for unlimited use via stripe. 
 
-##Table of Contents
+## Table of Contents
 
 
 - [Project Overview](#project-overview)
@@ -117,6 +117,7 @@ You should see a confirmation page "TinyInvoice Main Blueprint"
   |Terminal can’t activate venv|Check you created it in the project folder: python3 -m venv venv|
   |Permission denied when creating repo on external drive|Change folder ownership: sudo chown -R $USER:$USER /path/to/folder|
   
+
 
 
 

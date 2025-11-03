@@ -11,6 +11,8 @@
 <body class="bg-gray-100 p-8">
     <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
         <h1 class="text-2xl font-bold mb-6">Create Your Invoice now</h1>
+        <label class="block font-semibold">VAT?</label>
+        <input type="checkbox" id="vat-toggle"> 
         <form action="/generate" method="POST" id="invoice-form">
             <!-- Business Info -->
             <div class="mb-4">
@@ -36,6 +38,8 @@
                         <th class="text-left">Description</th>
                         <th class="text-left">Quantity</th>
                         <th class="text-left">Price</th>
+                        <th class="text-left">VAT</th>
+                        <th class="text-left">Total</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -46,6 +50,8 @@
                                 required></td>
                         <td><input type="number" name="item_price[]" class="border p-1 rounded" value="0" min="0"
                                 step="0.01" required></td>
+                        <td class="vat-cell">0.00</td>
+                        <td class="line-total">0.00</td>
                         <td><button type="button" class="text-red-500 remove-item">X</button></td>
                     </tr>
                 </tbody>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+    h1, h2 { margin: 0; }
+    .branding { position: absolute; top: 10px; right: 10px; color: #aaa; font-size: 14px; }
+  </style>
+</head>
+<body>
+  {% if branding %}
+  <div class="branding">TinyInvoice</div>
+  {% endif %}
+
+  <h1>{{ data['business_name'][0] }}</h1>
+  <br>
+  <h2>Invoice for {{ data['client_name'][0] }}</h2>
+  <p>Date: {{ data['invoice_date'][0] }}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in range(data['item_description']|length) %}
+      <tr>
+        <td>{{ data['item_description'][i] }}</td>
+        <td>{{ data['item_quantity'][i] }}</td>
+        <td>{{ data['item_price'][i] }}</td>
+        <td>{{ (data['item_quantity'][i]|float) * (data['item_price'][i]|float) | round(2) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Total: {{ data['total'][0] }}</h3>
+</body>
+</html>

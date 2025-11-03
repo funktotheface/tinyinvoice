@@ -50,8 +50,10 @@
                                 required></td>
                         <td><input type="number" name="item_price[]" class="border p-1 rounded" value="0" min="0"
                                 step="0.01" required></td>
-                        <td class="vat-cell">0.00</td>
-                        <td class="line-total">0.00</td>
+                        <td><input type="text" name="item_vat[]" class="border p-1 rounded vat-cell" readonly
+                                value="0.00"></td>
+                        <td><input type="text" name="item_total[]" class="border p-1 rounded line-total" readonly
+                                value="0.00"></td>
                         <td><button type="button" class="text-red-500 remove-item">X</button></td>
                     </tr>
                 </tbody>

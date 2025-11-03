@@ -17,12 +17,17 @@ function updateTotal() {
         const vatAmount = lineSubtotal * vatRate;
         const lineTotal = lineSubtotal + vatAmount;
 
+        // Grab the inputs in THIS row
+        const vatCell = row.querySelector('.vat-cell');       // ✅ input[name="item_vat[]"]
+        const lineTotalCell = row.querySelector('.line-total'); // ✅ input[name="item_total[]"]
+
         // Update display cells
-        row.querySelector('.vat-cell').textContent = vatAmount.toFixed(2);
-        row.querySelector('.line-total').textContent = lineTotal.toFixed(2);
+        vatCell.value = vatAmount.toFixed(2);
+        lineTotalCell.value = lineTotal.toFixed(2); // we already added VAT above
 
         total += lineTotal;
     });
+
 
     totalField.value = total.toFixed(2);
 }
@@ -34,12 +39,14 @@ addItemBtn.addEventListener('click', () => {
         <td><input type="text" name="item_description[]" class="border p-1 rounded" required></td>
         <td><input type="number" name="item_quantity[]" class="border p-1 rounded" value="1" min="1" required></td>
         <td><input type="number" name="item_price[]" class="border p-1 rounded" value="0" min="0" step="0.01" required></td>
-        <td class="vat-cell">0.00</td>
-        <td class="line-total">0.00</td>
+        <td><input type="text" name="item_vat[]" class="border p-1 rounded vat-cell" readonly value="0.00"></td>
+        <td><input type="text" name="item_total[]" class="border p-1 rounded line-total" readonly value="0.00"></td>
         <td><button type="button" class="text-red-500 remove-item">X</button></td>
     `;
     itemsTable.appendChild(newRow);
+    updateTotal(); // 👈 this line ensures the new row updates totals instantly
 });
+
 
 // Remove item
 itemsTable.addEventListener('click', e => {

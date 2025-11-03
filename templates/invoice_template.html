@@ -27,7 +27,9 @@
         <th>Description</th>
         <th>Quantity</th>
         <th>Price</th>
-        <th>Total</th>
+        <th>before VAT</th>
+        <th>VAT</th>
+        <th>Line Total</th>
       </tr>
     </thead>
     <tbody>
@@ -37,6 +39,8 @@
         <td>{{ data['item_quantity'][i] }}</td>
         <td>{{ data['item_price'][i] }}</td>
         <td>{{ (data['item_quantity'][i]|float) * (data['item_price'][i]|float) | round(2) }}</td>
+        <td>{{ data['item_vat'][i] }}</td>
+        <td>{{ data['item_total'][i] }}</td>
       </tr>
       {% endfor %}
     </tbody>

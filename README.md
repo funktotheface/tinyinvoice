@@ -119,5 +119,61 @@ You should see a confirmation page "TinyInvoice Main Blueprint"
   
 
 
+# Tailwind v4 Setup in Flask
 
+follow the tailwind CLI installation https://tailwindcss.com/docs/installation/tailwind-cli
+
+## Input CSS:
+
+@import "tailwindcss";
+
+
+No @tailwind base; etc. — not supported in v4.
+
+## Tailwind CLI Watch:
+
+npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
+
+
+## Keeps output.css up-to-date automatically.
+
+Tailwind Config (tailwind.config.js):
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./templates/**/*.html",
+    "./static/**/*.{js,html}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+
+Ensures Tailwind scans all templates and JS for class names.
+
+Link CSS in Templates:
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}?v={{ now }}">
+
+
+Optional cache-busting with ?v={{ now }}.
+
+Development workflow:
+
+Keep Tailwind CLI watch running in one terminal.
+
+Flask + Livereload in another.
+
+Edit HTML, JS, or Tailwind classes → browser refreshes automatically.
+
+Common pitfalls:
+
+Changes won’t appear if output.css isn’t rebuilt.
+
+Tailwind v4 syntax differs from v3+ — only @import "tailwindcss";.
+
+Cache-busting prevents old CSS from sticking in the browser.
 

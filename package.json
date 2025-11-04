@@ -1,0 +1,26 @@
+{
+  "name": "tinyinvoice",
+  "version": "1.0.0",
+  "description": "**TinyInvoice** is a lightweight Flask web application for generating and managing invoices.\r Designed to be flexible, fast and user firnedly, it allows users to create useable PDF invoices in seconds.\r No signup is required to use the free or basic package, with the pro package offering extra benefits such as \r client management and invoice templates.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funktotheface/tinyinvoice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/funktotheface/tinyinvoice/issues"
+  },
+  "homepage": "https://github.com/funktotheface/tinyinvoice#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.16",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.16"
+  }
+}

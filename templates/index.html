@@ -5,14 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TinyInvoice - invoices in 60 seconds!</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}"> 
+
+
+
 </head>
 
-<body class="bg-gray-100 p-8">
+<body class="bg-red-400 p-8">
     <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
         <img src="{{ url_for('static', filename='media/img/logoWithTextNoBg_Glow.png') }}" alt="TinyInvoice Logo"
             class="mx-auto mb-4 w-48">
-        <h1 class="text-2xl font-bold mb-6">Create Your Invoice now</h1>
+        <h1 class="text-2xl font-bold mb-6">Create Your Invoice Now</h1>
         <form action="/generate" method="POST" id="invoice-form">
             <!-- Business Info -->
             <div class="mb-4">
@@ -75,8 +78,10 @@
     </div>
 
 
-
+    <script src="http://127.0.0.1:5000/livereload.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+   
+
 
 </body>
 

@@ -1,70 +1,83 @@
 {% extends 'base.html' %}
 
     {% block content %}
-    <div id="particles-js"></div>
-    <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
-        <img src="{{ url_for('static', filename='media/img/logoWithTextNoBg_Glow.png') }}" alt="TinyInvoice Logo"
-            class="mx-auto mb-4 w-48">
-        <h1 class="text-2xl font-bold mb-6">Create Your Invoice Now</h1>
-        <form action="/generate" method="POST" id="invoice-form">
-            <!-- Business Info -->
-            <div class="mb-4">
-                <label class="block font-semibold">Your Business Name</label>
-                <input type="text" name="business_name" class="w-full border p-2 rounded" required>
-                <label class="block font-semibold">VAT?</label>
-                <input type="checkbox" id="vat-toggle">
-            </div>
+       <div id="particles-js"></div>
+<div class="flex flex-col items-center justify-center my-5 space-y-4">
+  <img src="https://raw.githubusercontent.com/funktotheface/tinyinvoice/main/static/media/img/logoWithTextNoBg_Glow.png"
+       alt="TinyInvoice Logo"
+       class="w-96 h-auto">
+  <h1 class="text-4xl text-center font-bold text-white mb-8">Get a Free Invoice in 60 Seconds</h1>
+</div>
 
-            <div class="mb-4">
-                <label class="block font-semibold">Client Name</label>
-                <input type="text" name="client_name" class="w-full border p-2 rounded" required>
-            </div>
+    <div class="myContentmax-w-4xl mx-auto rounded-2xl bg-white/10 backdrop-blur-sm backdrop-saturate-150 text-white p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center sm:text-left">Create Your Invoice</h2>
 
-            <div class="mb-4">
-                <label class="block font-semibold">Invoice Date</label>
-                <input type="date" name="invoice_date" class="w-full border p-2 rounded" required>
-            </div>
+      <form action="/generate" method="POST" id="invoice-form" class="space-y-6">
 
-            <!-- Items Table -->
-            <h2 class="text-xl font-semibold mb-2">Items</h2>
-            <table class="w-full mb-4" id="items-table">
-                <thead>
-                    <tr>
-                        <th class="text-left">Description</th>
-                        <th class="text-left">Quantity</th>
-                        <th class="text-left">Price</th>
-                        <th class="text-left">VAT</th>
-                        <th class="text-left">Total</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" name="item_description[]" class="border p-1 rounded" required></td>
-                        <td><input type="number" name="item_quantity[]" class="border p-1 rounded" value="1" min="1"
-                                required></td>
-                        <td><input type="number" name="item_price[]" class="border p-1 rounded" value="0" min="0"
-                                step="0.01" required></td>
-                        <td><input type="text" name="item_vat[]" class="border p-1 rounded vat-cell" readonly
-                                value="0.00"></td>
-                        <td><input type="text" name="item_total[]" class="border p-1 rounded line-total" readonly
-                                value="0.00"></td>
-                        <td><button type="button" class="text-red-500 remove-item">X</button></td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Business Info -->
+        <div class="space-y-4">
+          <label class="block font-semibold">Your Business Name</label>
+          <input type="text" name="business_name" class="w-full p-3 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="Enter business name" required>
 
-            <button type="button" id="add-item" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">Add Item</button>
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="vat-toggle" class="h-5 w-5 accent-blue-900">
+            <label for="vat-toggle" class="font-semibold text-white">VAT?</label>
+          </div>
+        </div>
 
-            <!-- Total -->
-            <div class="mb-4">
-                <label class="block font-semibold">Total</label>
-                <input type="text" id="total" name="total" class="w-full border p-2 rounded" readonly value="0">
-            </div>
+<div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+  <div class="flex-1 space-y-2">
+    <label class="block font-semibold">Client Name</label>
+    <input type="text" name="client_name"
+           class="w-full p-3 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
+           placeholder="Enter client name" required>
+  </div>
+  <div class="flex-1 space-y-2">
+    <label class="block font-semibold">Invoice Date</label>
+    <input type="date" name="invoice_date"
+           class="w-full p-3 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
+           required>
+  </div>
+</div>
 
-            <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded">Generate PDF</button>
-        </form>
+        <!-- Items Table -->
+        <h2 class="text-2xl font-semibold mb-4 text-white">Items</h2>
+        <div class="overflow-hidden rounded-2xl p-0">
+          <table class="w-full mb-0" id="items-table">
+            <thead class="rounded-t-xl">
+              <tr class="rounded-2xl">
+                <th class="text-left p-2">Description</th>
+                <th class="text-left p-2">Quantity</th>
+                <th class="text-left p-2">Price</th>
+                <th class="text-left p-2">VAT</th>
+                <th class="text-left p-2">Total</th>
+                <th class="p-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="bg-gray-100 rounded-xl shadow-inner">
+                <td class="first:rounded-l-xl last:rounded-r-xl p-2"><input type="text" name="item_description[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 placeholder-blue-400 shadow-inner" required></td>
+                <td><input type="number" name="item_quantity[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner" value="1" min="1" required></td>
+                <td><input type="number" name="item_price[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner" value="0" min="0" step="0.01" required></td>
+                <td><input type="text" name="item_vat[]" class="border-none p-2 rounded-xl w-full vat-cell bg-gray-100 text-blue-900 shadow-inner" readonly value="0.00"></td>
+                <td><input type="text" name="item_total[]" class="border-none p-2 rounded-xl w-full line-total bg-gray-100 text-blue-900 shadow-inner" readonly value="0.00"></td>
+                <td class="first:rounded-l-xl last:rounded-r-xl p-2"><button type="button" class="text-red-500 remove-item font-bold">X</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
+        <div class="flex justify-center lg:justify-end"><button type="button" class="bg-gray-100 text-blue-900 px-6 py-2 rounded-xl shadow hover:shadow-md transition font-semibold hover:bg-green-300" id="add-item">Add Item</button></div>
+
+        <!-- Total -->
+        <div class="space-y-4">
+          <label class="block font-semibold">Total</label>
+          <input type="text" id="total" name="total" class="w-full p-3 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300" readonly value="0">
+        </div>
+
+        <div class="flex justify-center"><button type="submit" class="sm:w-auto bg-gray-100 text-blue-900 px-8 py-3 rounded-xl shadow hover:shadow-md font-semibold transition hover:bg-green-300">Generate
+            PDF</button></div>
+      </form>
     </div>
     {% endblock %}
 

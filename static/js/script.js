@@ -38,19 +38,20 @@ function updateTotal() {
 // Add a new item row
 addItemBtn.addEventListener('click', () => {
     const newRow = document.createElement('tr');
+    newRow.className = 'bg-gray-100 rounded-xl shadow-inner';
     newRow.innerHTML = `
-        <td><input type="text" name="item_description[]" class="border p-1 rounded" required></td>
-        <td>
-          <select name="item_type[]" class="border p-1 rounded">
+        <td class="first:rounded-l-xl last:rounded-r-xl p-2"><input type="text" name="item_description[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 placeholder-blue-400 shadow-inner" required></td>
+        <td class="p-2">
+          <select name="item_type[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner">
             <option value="goods" selected>Goods</option>
             <option value="service">Service</option>
           </select>
         </td>
-        <td><input type="number" name="item_quantity[]" class="border p-1 rounded" value="1" min="1" required></td>
-        <td><input type="number" name="item_price[]" class="border p-1 rounded" value="0" min="0" step="0.01" required></td>
-        <td><input type="text" name="item_vat[]" class="border p-1 rounded vat-cell" readonly value="0.00"></td>
-        <td><input type="text" name="item_total[]" class="border p-1 rounded line-total" readonly value="0.00"></td>
-        <td><button type="button" class="text-red-500 remove-item">X</button></td>
+        <td class="p-2"><input type="number" name="item_quantity[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner" value="1" min="1" required></td>
+        <td class="p-2"><input type="number" name="item_price[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner" value="0" min="0" step="0.01" required></td>
+        <td class="p-2"><input type="text" name="item_vat[]" class="border-none p-2 rounded-xl w-full vat-cell bg-gray-100 text-blue-900 shadow-inner" readonly value="0.00"></td>
+        <td class="p-2"><input type="text" name="item_total[]" class="border-none p-2 rounded-xl w-full line-total bg-gray-100 text-blue-900 shadow-inner" readonly value="0.00"></td>
+        <td class="first:rounded-l-xl last:rounded-r-xl p-2"><button type="button" class="text-red-500 remove-item font-bold">X</button></td>
     `;
     itemsTable.appendChild(newRow);
     // Ensure labels/placeholder reflect the selected type for the new row

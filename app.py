@@ -1,26 +1,56 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from routes.main import main_bp
 from routes.billing import billing_bp
 from routes.auth import auth_bp
 from livereload import Server
 
+# import the db and models defined in models.py
+from models import db, Invoice
+
+
 app = Flask(__name__)
 app.config.from_object('config.Config')
 app.debug = True
-db = SQLAlchemy(app)
+
+# initialize the shared db object with the app
+db.init_app(app)
 
 # Register blueprints
 app.register_blueprint(main_bp)
 app.register_blueprint(billing_bp)
 app.register_blueprint(auth_bp)
 
+
+@app.context_processor
+def inject_invoice_count():
+    try:
+        # Count invoices; requires app context
+        with app.app_context():
+            count = Invoice.query.count()
+    except Exception:
+        count = 0
+    return {'invoice_count': count}
+
+
 # Temp root route
 @app.route('/')
 def home():
     return "<h1>TinyInvoice is running!</h1>"
 
+
 if __name__ == '__main__':
+    # Ensure instance folder exists (SQLite file lives under instance/)
+    import os
+    try:
+        os.makedirs(app.instance_path, exist_ok=True)
+    except Exception:
+        # If instance_path cannot be created, fall back to current directory
+        pass
+
+    # Create tables if they don't exist
+    with app.app_context():
+        db.create_all()
+
     server = Server(app.wsgi_app)
     server.watch('templates/**/*.html')
     server.watch('static/css/**/*.css')

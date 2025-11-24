@@ -14,7 +14,7 @@ def generate_pdf():
         # Grab the form data
     data = request.form.to_dict(flat=False)  # flat=False keeps the item lists
     data  =  {k.rstrip('[]'): v for k, v in data.items()}
-    logo_path = os.path.join(current_app.root_path, 'static', 'media', 'img', 'logoWithTextNoBg_Glow.png')
+    logo_path = os.path.join(current_app.root_path, 'static', 'media', 'img', 'templateLogo.png')
 
     # Render the HTML template for the invoice
     html = render_template('invoice_template.html', data=data, branding=True, logo_path=logo_path)

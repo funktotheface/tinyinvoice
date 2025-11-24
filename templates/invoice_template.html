@@ -80,7 +80,31 @@
     </tbody>
   </table>
 
-  <h3>Total: {{ data['total'][0] }}</h3>
+  {% set bank_name = (data['bank_account_holder'][0] if 'bank_account_holder' in data else '') %}
+  {% set bank_number = (data['bank_account_number'][0] if 'bank_account_number' in data else '') %}
+  {% set bank_sort = (data['bank_sort_code'][0] if 'bank_sort_code' in data else '') %}
+
+  <table style="width:100%; margin-top:20px; border-collapse:collapse;">
+    <tr>
+      <td style="vertical-align:top;">
+        <h3>Total: {{ data['total'][0] }}</h3>
+      </td>
+      <td style="width:260px;"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td style="text-align:right; vertical-align:top;">
+        {% if bank_name or bank_number or bank_sort %}
+        <h3 style="margin:0 0 6px 0;">Bank details</h3>
+        <p style="margin:0;">
+          {% if bank_name %}<strong>Account holder:</strong> {{ bank_name }}<br>{% endif %}
+          {% if bank_number %}<strong>Account number:</strong> {{ bank_number }}<br>{% endif %}
+          {% if bank_sort %}<strong>Sort code:</strong> {{ bank_sort }}{% endif %}
+        </p>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
 </body>
 
 </html>

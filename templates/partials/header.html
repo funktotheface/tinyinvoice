@@ -7,14 +7,35 @@
             <img src="{{ url_for('static', filename='media/img/logoWithTextNoBg_Glow.png') }}"
                  alt="TinyInvoice Logo"
                  class="h-10 w-auto">
-                 <span class="text-white text-sm sm:text-base font-semibold tracking-wide uppercase drop-shadow-lg">Get a Free Invoice in 60 Seconds</span>
+                 <span class="hidden sm:inline-block text-white text-sm sm:text-base font-semibold tracking-wide uppercase drop-shadow-lg">Get a Free Invoice in 60 Seconds</span>
         </div>
 
-        <!-- Nav -->
-        <nav class="space-x-6 text-white font-medium">
+        <!-- Mobile menu button -->
+        <div class="lg:hidden">
+            <button id="mobile-menu-button" aria-controls="mobile-nav" aria-expanded="false" class="p-2 rounded-md text-white">
+                <!-- simple hamburger icon -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Nav (desktop) -->
+        <nav class="hidden lg:flex space-x-6 text-white font-medium">
             <a href="#" class="hover:text-gray-300">Home</a>
             <a href="#" class="hover:text-gray-300">Pricing</a>
             <a href="#" class="hover:text-gray-300">Login</a>
         </nav>
+    </div>
+
+    <!-- Mobile nav (toggled) -->
+    <div id="mobile-nav" class="hidden lg:hidden max-w-7xl mx-auto px-6">
+        <div class="bg-[rgba(7,8,37,0.95)] p-4 rounded-b-md mt-2">
+            <a href="#" class="block text-white py-2">Home</a>
+            <a href="#" class="block text-white py-2">Pricing</a>
+            <a href="#" class="block text-white py-2">Login</a>
+        </div>
     </div>
 </header>

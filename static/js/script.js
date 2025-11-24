@@ -212,3 +212,24 @@ particlesJS("particles-js", {
   },
   "retina_detect": true
 });
+
+// Mobile menu toggle
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileNav = document.getElementById('mobile-nav');
+if (mobileMenuButton && mobileNav) {
+  mobileMenuButton.addEventListener('click', () => {
+    const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+    mobileMenuButton.setAttribute('aria-expanded', String(!expanded));
+    mobileNav.classList.toggle('hidden');
+  });
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!mobileNav.classList.contains('hidden')) {
+      const target = e.target;
+      if (!mobileNav.contains(target) && !mobileMenuButton.contains(target)) {
+        mobileNav.classList.add('hidden');
+        mobileMenuButton.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+}

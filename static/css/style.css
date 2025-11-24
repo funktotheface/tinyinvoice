@@ -66,3 +66,83 @@ canvas {
           justify-content: flex-end;
         }
       }
+
+
+/* Mobile-first improvements */
+@media (max-width: 640px) {
+  /* Hide heavy particle background for performance */
+  #particles-js { display: none; }
+
+  /* Tighter container on mobile */
+  .myContent {
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  }
+
+  /* Improve inputs and touch targets */
+  input[type="text"], input[type="number"], input[type="date"], select, button {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /* Make action buttons full width and prominent on mobile */
+  #add-item, form button[type="submit"] {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  /* Make table rows feel like cards */
+  tbody tr {
+    background: #ffffff;
+    background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+    box-shadow: 0 4px 18px rgba(2,6,23,0.08);
+    border-radius: 12px;
+    padding: 0.75rem;
+  }
+
+  td input { width: 100%; }
+
+  /* Larger remove button hit area */
+  .remove-item {
+    background: rgba(255,235,238,0.9);
+    color: #b91c1c;
+    padding: 0.45rem 0.6rem;
+    border-radius: 9999px;
+    font-weight: 700;
+  }
+}
+
+/* Desktop tweaks for bank column width */
+@media (min-width: 1024px) {
+  .bank-column { width: 100%; }
+  .bank-column input {
+    width: 220px; /* keep bank inputs narrow in right column */
+  }
+
+  /* Make header nav compact on mobile but visible on desktop */
+  header#main-header nav { display: block; }
+}
+
+/* Hide nav on small screens to reduce clutter (optionally add mobile menu later) */
+@media (max-width: 640px) {
+  header#main-header nav { display: none; }
+}
+
+/* Mobile nav styling */
+#mobile-nav {
+  position: relative;
+}
+#mobile-nav > div {
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+}
+#mobile-nav a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}

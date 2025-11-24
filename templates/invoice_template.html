@@ -64,9 +64,14 @@
     <tbody>
       {% for i in range(data['item_description']|length) %}
       <tr>
+        {% set item_type = (data['item_type'][i] if 'item_type' in data else 'goods') %}
         <td>{{ data['item_description'][i] }}</td>
-        <td>{{ data['item_quantity'][i] }}</td>
-        <td>{{ data['item_price'][i] }}</td>
+        <td>
+          {{ data['item_quantity'][i] }}{% if item_type == 'service' %} hrs{% endif %}
+        </td>
+        <td>
+          {% if item_type == 'service' %}£{{ data['item_price'][i] }} per hr{% else %}£{{ data['item_price'][i] }}{% endif %}
+        </td>
         <td>{{ (data['item_quantity'][i]|float) * (data['item_price'][i]|float) | round(2) }}</td>
         <td>{{ data['item_vat'][i] }}</td>
         <td>{{ data['item_total'][i] }}</td>

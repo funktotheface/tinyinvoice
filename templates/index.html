@@ -42,6 +42,7 @@
             <thead class="rounded-t-xl">
               <tr class="rounded-2xl">
                 <th class="text-left p-2">Description</th>
+                <th class="text-left p-2">Type</th>
                 <th class="text-left p-2">Quantity</th>
                 <th class="text-left p-2">Price</th>
                 <th class="text-left p-2">VAT</th>
@@ -52,6 +53,12 @@
             <tbody>
               <tr class="bg-gray-100 rounded-xl shadow-inner">
                 <td class="first:rounded-l-xl last:rounded-r-xl p-2"><input type="text" name="item_description[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 placeholder-blue-400 shadow-inner" required></td>
+                <td>
+                  <select name="item_type[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner">
+                    <option value="goods" selected>Goods</option>
+                    <option value="service">Service</option>
+                  </select>
+                </td>
                 <td><input type="number" name="item_quantity[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner" value="1" min="1" required></td>
                 <td><input type="number" name="item_price[]" class="border-none p-2 rounded-xl w-full bg-gray-100 text-blue-900 shadow-inner" value="0" min="0" step="0.01" required></td>
                 <td><input type="text" name="item_vat[]" class="border-none p-2 rounded-xl w-full vat-cell bg-gray-100 text-blue-900 shadow-inner" readonly value="0.00"></td>

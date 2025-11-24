@@ -97,6 +97,18 @@ Visit http://127.0.0.1:5000 in your browser.
 
 You should see a confirmation page "TinyInvoice Main Blueprint"
 
+## Manual Verification Checklist (new feature)
+
+After running the app, verify the goods/services feature works:
+
+- Open the invoice form at `http://127.0.0.1:5000`.
+- In the Items table, use the **Type** select to choose `Goods` or `Service` for a row.
+- When `Service` is selected: the quantity input placeholder shows `Hrs` and the price placeholder shows `£PH`.
+- Add multiple items (goods and services), toggle the VAT checkbox, and click `Generate PDF`.
+- In the generated invoice PDF/preview, service rows display hours (e.g. `3 hrs`) and price as `£X per hr`.
+
+If anything looks off, check the browser console for JS errors and ensure the server logs show the form data was received.
+
 ## Blueprints & Templates
 - Blueprints(main_bp, billing_bp, auth_bp) allow modular organization of routes.
 - -Templates use Jinja2:

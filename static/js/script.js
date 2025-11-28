@@ -44,18 +44,30 @@ if (itemsTableEl) {
             const newRow = document.createElement('tr');
             newRow.className = 'bg-gray-100 rounded-xl shadow-inner';
             newRow.innerHTML = `
-                <td class="p-2 w-2/5"><input type="text" name="item_description[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 border-none" required></td>
-                <td class="p-2 w-1/6">
+                <td class="p-2 w-2/5" data-label="Description">
+                  <input type="text" name="item_description[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 border-none" required>
+                </td>
+                <td class="p-2 w-1/6" data-label="Type">
                   <select name="item_type[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none">
                     <option value="goods" selected>Goods</option>
                     <option value="service">Service</option>
                   </select>
                 </td>
-                <td class="p-2 w-1/12"><input type="number" step="0.01" name="item_quantity[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="1" min="1" required></td>
-                <td class="p-2 w-32"><input type="number" name="item_price[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="0" min="0" step="0.01" required></td>
-                <td class="p-2 w-32"><input type="text" name="item_vat[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner vat-cell border-none" readonly value="0.00"></td>
-                <td class="p-2 w-32"><input type="text" name="item_total[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner line-total border-none" readonly value="0.00"></td>
-                <td class="p-2 w-10 text-center"><button type="button" class="text-red-500 font-bold remove-item">X</button></td>
+                <td class="p-2 w-1/12" data-label="Qty">
+                  <input type="number" step="0.01" name="item_quantity[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="1" min="1" required>
+                </td>
+                <td class="p-2 w-32" data-label="Price">
+                  <input type="number" name="item_price[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="0" min="0" step="0.01" required>
+                </td>
+                <td class="p-2 w-32" data-label="VAT">
+                  <input type="text" name="item_vat[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner vat-cell border-none" readonly value="0.00">
+                </td>
+                <td class="p-2 w-32" data-label="Total">
+                  <input type="text" name="item_total[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner line-total border-none" readonly value="0.00">
+                </td>
+                <td class="p-2 w-10 text-center">
+                  <button type="button" class="text-red-500 font-bold remove-item">X</button>
+                </td>
             `;
             itemsTable.appendChild(newRow);
             // Ensure labels/placeholder reflect the selected type for the new row

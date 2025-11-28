@@ -105,14 +105,14 @@ vatToggle.addEventListener('change', updateTotal);
 particlesJS("particles-js", {
   "particles": {
     "number": {
-      "value": 355,
+      "value":80,
       "density": {
         "enable": true,
         "value_area": 789.15
       }
     },
     "color": {
-      "value": "#ffffff"
+      "value": "#00FFFF"
     },
     "shape": {
       "type": "circle",
@@ -133,7 +133,7 @@ particlesJS("particles-js", {
       "value": 0.49,
       "random": false,
       "anim": {
-        "enable": true,
+        "enable": false,
         "speed": 0.25,
         "opacity_min": 0,
         "sync": false
@@ -150,9 +150,9 @@ particlesJS("particles-js", {
       }
     },
     "line_linked": {
-      "enable": false,
+      "enable": true,
       "distance": 150,
-      "color": "#ffffff",
+      "color": "#00FFFF",
       "opacity": 0.4,
       "width": 1
     },

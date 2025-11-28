@@ -1,148 +1,115 @@
 @import "tailwindcss";
 
-/* ---- reset ---- */
-
+/* Base reset */
 body {
   margin: 0;
   background-color: #1c153a;
 }
 
-
 canvas {
   display: block;
-  /* vertical-align: bottom; */
 }
 
-
-/* ---- particles.js container ---- */
-
+/* Particles background */
 #particles-js {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;              /* puts it behind everything */
-  pointer-events: none;     /* allows clicks to pass through */
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
-
-      /* Mobile stacking for table */
-      @media (max-width: 640px) {
-
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-          display: block;
-        }
-
-        thead tr {
-          display: none;
-        }
-
-        tbody tr {
-          margin-bottom: 1rem;
-          border-radius: 0.75rem;
-          padding: 0.75rem;
-          background: #f8f8f8;
-          box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.05), -4px -4px 10px rgba(255, 255, 255, 0.7);
-        }
-
-        td {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 0.5rem;
-        }
-
-        td input {
-          width: 60%;
-        }
-
-        td:last-child {
-          justify-content: flex-end;
-        }
-      }
-
-
-/* Mobile-first improvements */
+/* --------------------------------------------------
+   MOBILE (max-width: 640px)
+-------------------------------------------------- */
 @media (max-width: 640px) {
-  /* Hide heavy particle background for performance */
-  #particles-js { display: none; }
 
-  /* Tighter container on mobile */
+  /* Disable particles on mobile for performance */
+  #particles-js {
+    display: none;
+  }
+
+  /* Slightly tighter invoice container */
   .myContent {
     margin: 0.5rem;
     padding: 1rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border-radius: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
   }
 
-  /* Improve inputs and touch targets */
-  input[type="text"], input[type="number"], input[type="date"], select, button {
+  /* Make form elements easier to tap */
+  input, select, button {
     font-size: 16px;
-    line-height: 1.4;
   }
 
-  /* Make action buttons full width and prominent on mobile */
-  #add-item, form button[type="submit"] {
+  /* Buttons full width on mobile */
+  #add-item,
+  form button[type="submit"] {
     width: 100%;
-    padding: 0.85rem 1rem;
-    font-size: 1rem;
-    border-radius: 0.75rem;
   }
 
-  /* Make table rows feel like cards */
+  /* ------- Responsive Table (stacked rows) ------- */
+  table,
+  thead,
+  tbody,
+  th,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
   tbody tr {
-    background: #ffffff;
-    background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
-    box-shadow: 0 4px 18px rgba(2,6,23,0.08);
-    border-radius: 12px;
+    background: white;
     padding: 0.75rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 1rem;
   }
 
-  td input { width: 100%; }
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+  }
 
-  /* Larger remove button hit area */
+  /* Labels shown using data-label on TD */
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-right: 1rem;
+  }
+
+  /* Inputs fill available mobile space */
+  td input,
+  td select {
+    width: 55%;
+  }
+
+  /* Remove-item button: bigger tap target */
   .remove-item {
-    background: rgba(255,235,238,0.9);
-    color: #b91c1c;
-    padding: 0.45rem 0.6rem;
+    padding: 0.4rem 0.6rem;
     border-radius: 9999px;
     font-weight: 700;
+    background: rgba(255, 235, 238, 0.9);
+    color: #b91c1c;
+  }
+
+  /* Hide navbar by default */
+  header#main-header nav {
+    display: none;
   }
 }
 
-/* Desktop tweaks for bank column width */
+/* --------------------------------------------------
+   DESKTOP (≥ 1024px)
+-------------------------------------------------- */
 @media (min-width: 1024px) {
-  .bank-column { width: 100%; }
+  /* Bank column width constraints */
   .bank-column input {
-    width: 220px; /* keep bank inputs narrow in right column */
+    width: 220px;
   }
-
-  /* Make header nav compact on mobile but visible on desktop */
-  header#main-header nav { display: block; }
-}
-
-/* Hide nav on small screens to reduce clutter (optionally add mobile menu later) */
-@media (max-width: 640px) {
-  header#main-header nav { display: none; }
-}
-
-/* Mobile nav styling */
-#mobile-nav {
-  position: relative;
-}
-#mobile-nav > div {
-  border-radius: 0 0 12px 12px;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
-}
-#mobile-nav a {
-  display: block;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
 }

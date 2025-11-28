@@ -206,6 +206,9 @@
   .absolute {
     position: absolute;
   }
+  .fixed {
+    position: fixed;
+  }
   .static {
     position: static;
   }
@@ -307,6 +310,9 @@
   }
   .max-w-7xl {
     max-width: var(--container-7xl);
+  }
+  .table-fixed {
+    table-layout: fixed;
   }
   .border-collapse {
     border-collapse: collapse;

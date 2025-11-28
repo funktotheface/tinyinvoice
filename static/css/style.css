@@ -24,9 +24,6 @@ canvas {
 @media (max-width: 640px) {
 
   /* Disable particles on mobile for performance */
-  #particles-js {
-    display: none;
-  }
 
   /* Slightly tighter invoice container */
   .myContent {
@@ -111,5 +108,54 @@ canvas {
   /* Bank column width constraints */
   .bank-column input {
     width: 220px;
+  }
+}
+
+
+/* ---- Mobile stacking for table ---- */
+@media (max-width: 640px) {
+  /* Hide the table header */
+  table thead {
+    display: none;
+  }
+
+  /* Stack table rows as cards */
+  tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Stack cells vertically */
+  tbody td {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Label above input */
+  tbody td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+    color: #1e3a8a; /* Tailwind blue-900 */
+    margin-bottom: 0.25rem;
+  }
+
+  /* Make inputs take full width */
+  tbody td input,
+  tbody td select {
+    width: 100%;
+  }
+
+  /* Remove button full width (optional for better touch targets) */
+  tbody td .remove-item {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 0.25rem;
   }
 }

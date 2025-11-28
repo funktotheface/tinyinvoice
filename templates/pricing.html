@@ -6,26 +6,52 @@
 
   <h2 class="text-3xl font-bold mb-6 text-center">Pricing</h2>
 
-  <div class="space-y-6 text-gray-200">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et ligula in nunc bibendum fringilla a eu lectus. Curabitur quis nunc et justo venenatis luctus. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+  <p class="text-center mb-8 text-gray-200">
+    TinyInvoice gives you fast, professional invoices for free. Upgrade to Pro to unlock powerful business tools.
+  </p>
 
-    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-    <p>Aliquam erat volutpat. Praesent dictum, purus id luctus tincidunt, mauris justo gravida nibh, quis varius nunc arcu eget tortor. Integer non felis vitae urna tincidunt tincidunt non id neque.</p>
+    <!-- Free Tier -->
+    <div class="bg-white/5 p-6 rounded-2xl flex flex-col justify-between">
+      <div>
+        <h3 class="text-2xl font-semibold mb-4">Freemium</h3>
+        <p class="text-sm mb-6">Perfect for individuals and small businesses just getting started.</p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-      <div class="bg-white/5 p-4 rounded-xl">
-        <h3 class="font-semibold mb-2">Basic</h3>
-        <p class="text-sm">Lorem ipsum dolor sit amet, consectetur.</p>
+        <ul class="space-y-3 text-gray-300 mb-6">
+          <li>✅ Generate branded TinyInvoice PDFs</li>
+          <li>✅ Create unlimited invoices</li>
+          <li>✅ Basic invoice preview</li>
+        </ul>
+
+        <p class="text-xl font-bold mt-4">Free</p>
       </div>
-      <div class="bg-white/5 p-4 rounded-xl">
-        <h3 class="font-semibold mb-2">Pro</h3>
-        <p class="text-sm">Lorem ipsum dolor sit amet, consectetur.</p>
+      <a href="{{ url_for('main.index') }}">
+      <button class="mt-6 w-full bg-white/20 hover:bg-white/30 text-white font-semibold py-2 rounded-xl transition">
+        Get Started
+      </button>
+      </a>
+    </div>
+
+    <!-- Premium Tier -->
+    <div class="bg-white/5 p-6 rounded-2xl flex flex-col justify-between border-2 border-white/30">
+      <div>
+        <h3 class="text-2xl font-semibold mb-4">Pro</h3>
+        <p class="text-sm mb-6">All the tools you need to run your invoicing like a pro.</p>
+
+        <ul class="space-y-3 text-gray-300 mb-6">
+          <li>✅ Save customers & auto-increment invoice numbers</li>
+          <li>✅ Custom branding & white-label PDFs</li>
+          <li>✅ Full dashboard & invoice management</li>
+          <li>✅ Send invoices directly via email</li>
+          <li>✅ Generate quotes with TinyQuote & convert to invoices</li>
+        </ul>
+
+        <p class="text-xl font-bold mt-4">£4.99 / month</p>
       </div>
-      <div class="bg-white/5 p-4 rounded-xl">
-        <h3 class="font-semibold mb-2">Enterprise</h3>
-        <p class="text-sm">Lorem ipsum dolor sit amet, consectetur.</p>
-      </div>
+      <button class="mt-6 w-full bg-white/20 hover:bg-white/30 text-white font-semibold py-2 rounded-xl transition">
+        Upgrade to Pro
+      </button>
     </div>
 
   </div>

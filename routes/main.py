@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, send_file, current_app
 from weasyprint  import HTML
+from flask_login import login_required, current_user
 import  io, os
 
 # import DB model to record generated invoices
@@ -13,6 +14,11 @@ main_bp = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
+
+@main_bp.route('/dashboard')
+@login_required
+def dashboard():
+    return f"<h1>Welcome, {current_user.email}!</h1>"
 
 @main_bp.route('/pricing')
 def pricing():

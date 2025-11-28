@@ -1,12 +1,13 @@
 from flask import Flask
 from routes.main import main_bp
 from routes.billing import billing_bp
-from routes.auth import auth_bp
 from livereload import Server
 
 # import the db and models defined in models.py
 from models import db, Invoice, User
 from flask_login import LoginManager
+from routes.auth import auth_bp
+
 
 app = Flask(__name__)
 app.config.from_object('config.Config')

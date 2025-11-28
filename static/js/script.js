@@ -1,106 +1,112 @@
 
 
 
-const addItemBtn = document.getElementById('add-item');
-const itemsTable = document.getElementById('items-table').querySelector('tbody');
-const totalField = document.getElementById('total');
-const vatToggle = document.getElementById('vat-toggle');
+// Invoice-related behaviour: only run if the items table exists on this page
+const itemsTableEl = document.getElementById('items-table');
+if (itemsTableEl) {
+    const addItemBtn = document.getElementById('add-item');
+    const itemsTable = itemsTableEl.querySelector('tbody');
+    const totalField = document.getElementById('total');
+    const vatToggle = document.getElementById('vat-toggle');
 
-function updateTotal() {
-    let total = 0;
-    const rows = itemsTable.querySelectorAll('tr');
+    function updateTotal() {
+        let total = 0;
+        const rows = itemsTable.querySelectorAll('tr');
 
-    rows.forEach(row => {
-    const qty = parseFloat(row.querySelector('[name="item_quantity[]"]').value) || 0;
-    const price = parseFloat(row.querySelector('[name="item_price[]"]').value) || 0;
-        const lineSubtotal = qty * price;
+        rows.forEach(row => {
+            const qtyEl = row.querySelector('[name="item_quantity[]"]');
+            const priceEl = row.querySelector('[name="item_price[]"]');
+            const qty = qtyEl ? parseFloat(qtyEl.value) || 0 : 0;
+            const price = priceEl ? parseFloat(priceEl.value) || 0 : 0;
+            const lineSubtotal = qty * price;
 
-        // Calculate VAT if checkbox is ticked
-        const vatRate = vatToggle.checked ? 0.2 : 0;
-        const vatAmount = lineSubtotal * vatRate;
-        const lineTotal = lineSubtotal + vatAmount;
+            // Calculate VAT if checkbox is ticked
+            const vatRate = vatToggle && vatToggle.checked ? 0.2 : 0;
+            const vatAmount = lineSubtotal * vatRate;
+            const lineTotal = lineSubtotal + vatAmount;
 
-        // Grab the inputs in THIS row
-        const vatCell = row.querySelector('.vat-cell');       // ✅ input[name="item_vat[]"]
-        const lineTotalCell = row.querySelector('.line-total'); // ✅ input[name="item_total[]"]
+            // Grab the inputs in THIS row
+            const vatCell = row.querySelector('.vat-cell');
+            const lineTotalCell = row.querySelector('.line-total');
 
-        // Update display cells
-        vatCell.value = vatAmount.toFixed(2);
-        lineTotalCell.value = lineTotal.toFixed(2); // we already added VAT above
+            if (vatCell) vatCell.value = vatAmount.toFixed(2);
+            if (lineTotalCell) lineTotalCell.value = lineTotal.toFixed(2);
 
-        total += lineTotal;
+            total += lineTotal;
+        });
+
+        if (totalField) totalField.value = total.toFixed(2);
+    }
+
+    // Add a new item row
+    if (addItemBtn) {
+        addItemBtn.addEventListener('click', () => {
+            const newRow = document.createElement('tr');
+            newRow.className = 'bg-gray-100 rounded-xl shadow-inner';
+            newRow.innerHTML = `
+                <td class="p-2 w-2/5"><input type="text" name="item_description[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 border-none" required></td>
+                <td class="p-2 w-1/6">
+                  <select name="item_type[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none">
+                    <option value="goods" selected>Goods</option>
+                    <option value="service">Service</option>
+                  </select>
+                </td>
+                <td class="p-2 w-1/12"><input type="number" step="0.01" name="item_quantity[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="1" min="1" required></td>
+                <td class="p-2 w-32"><input type="number" name="item_price[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="0" min="0" step="0.01" required></td>
+                <td class="p-2 w-32"><input type="text" name="item_vat[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner vat-cell border-none" readonly value="0.00"></td>
+                <td class="p-2 w-32"><input type="text" name="item_total[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner line-total border-none" readonly value="0.00"></td>
+                <td class="p-2 w-10 text-center"><button type="button" class="text-red-500 font-bold remove-item">X</button></td>
+            `;
+            itemsTable.appendChild(newRow);
+            // Ensure labels/placeholder reflect the selected type for the new row
+            updateRowLabels(newRow);
+            updateTotal(); // ensure the new row updates totals instantly
+        });
+    }
+
+    // Remove item
+    itemsTable.addEventListener('click', e => {
+        if (e.target.classList.contains('remove-item')) {
+            e.target.closest('tr').remove();
+            updateTotal();
+        }
     });
 
+    // Update row labels/placeholders based on item type
+    function updateRowLabels(row) {
+      const typeSelect = row.querySelector('[name="item_type[]"]');
+      if (!typeSelect) return;
+      const type = typeSelect.value;
+      const qtyInput = row.querySelector('[name="item_quantity[]"]');
+      const priceInput = row.querySelector('[name="item_price[]"]');
 
-    totalField.value = total.toFixed(2);
-}
-
-// Add a new item row
-addItemBtn.addEventListener('click', () => {
-    const newRow = document.createElement('tr');
-    newRow.className = 'bg-gray-100 rounded-xl shadow-inner';
-    newRow.innerHTML = `
-        <td class="p-2 w-2/5"><input type="text" name="item_description[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner placeholder-blue-400 border-none" required></td>
-        <td class="p-2 w-1/6">
-          <select name="item_type[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none">
-            <option value="goods" selected>Goods</option>
-            <option value="service">Service</option>
-          </select>
-        </td>
-        <td class="p-2 w-1/12"><input type="number" step="0.01" name="item_quantity[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="1" min="1" required></td>
-        <td class="p-2 w-32"><input type="number" name="item_price[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner border-none" value="0" min="0" step="0.01" required></td>
-        <td class="p-2 w-32"><input type="text" name="item_vat[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner vat-cell border-none" readonly value="0.00"></td>
-        <td class="p-2 w-32"><input type="text" name="item_total[]" class="w-full p-2 rounded-xl bg-gray-100 text-blue-900 shadow-inner line-total border-none" readonly value="0.00"></td>
-        <td class="p-2 w-10 text-center"><button type="button" class="text-red-500 font-bold remove-item">X</button></td>
-    `;
-    itemsTable.appendChild(newRow);
-    // Ensure labels/placeholder reflect the selected type for the new row
-    updateRowLabels(newRow);
-    updateTotal(); // 👈 this line ensures the new row updates totals instantly
-});
-
-
-// Remove item
-itemsTable.addEventListener('click', e => {
-    if (e.target.classList.contains('remove-item')) {
-        e.target.closest('tr').remove();
-        updateTotal();
+      if (type === 'service') {
+        if (qtyInput) qtyInput.placeholder = 'Hrs';
+        if (priceInput) priceInput.placeholder = '£PH';
+        if (qtyInput) qtyInput.min = '0';
+      } else {
+        if (qtyInput) qtyInput.placeholder = 'Qty';
+        if (priceInput) priceInput.placeholder = 'Price';
+        if (qtyInput) qtyInput.min = '1';
+      }
     }
-});
 
-// Update row labels/placeholders based on item type
-function updateRowLabels(row) {
-  const typeSelect = row.querySelector('[name="item_type[]"]');
-  if (!typeSelect) return;
-  const type = typeSelect.value;
-  const qtyInput = row.querySelector('[name="item_quantity[]"]');
-  const priceInput = row.querySelector('[name="item_price[]"]');
+    // Delegate change events to handle type switches for any row (including dynamic rows)
+    itemsTable.addEventListener('change', e => {
+      const row = e.target.closest('tr');
+      if (!row) return;
+      if (e.target.matches('[name="item_type[]"]')) {
+        updateRowLabels(row);
+      }
+      // Recompute totals on any change
+      updateTotal();
+    });
 
-  if (type === 'service') {
-    if (qtyInput) qtyInput.placeholder = 'Hrs';
-    if (priceInput) priceInput.placeholder = '£PH';
-    if (qtyInput) qtyInput.min = '0';
-  } else {
-    if (qtyInput) qtyInput.placeholder = 'Qty';
-    if (priceInput) priceInput.placeholder = 'Price';
-    if (qtyInput) qtyInput.min = '1';
-  }
+    // Update totals on input and toggle
+    itemsTable.addEventListener('input', updateTotal);
+    if (vatToggle) vatToggle.addEventListener('change', updateTotal);
+
 }
-
-// Delegate change events to handle type switches for any row (including dynamic rows)
-itemsTable.addEventListener('change', e => {
-  const row = e.target.closest('tr');
-  if (!row) return;
-  if (e.target.matches('[name="item_type[]"]')) {
-    updateRowLabels(row);
-  }
-  // Recompute totals on any change
-  updateTotal();
-});
-
-// Update totals on input and toggle
-itemsTable.addEventListener('input', updateTotal);
-vatToggle.addEventListener('change', updateTotal);
 
 particlesJS("particles-js", {
   "particles": {

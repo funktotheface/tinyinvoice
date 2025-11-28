@@ -4,9 +4,9 @@
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
-            <img src="{{ url_for('static', filename='media/img/logoWithTextNoBg_Glow.png') }}"
+            <a href="{{ url_for('main.index') }}"><img src="{{ url_for('static', filename='media/img/logoWithTextNoBg_Glow.png') }}"
                  alt="TinyInvoice Logo"
-                 class="h-10 w-auto">
+                 class="h-10 w-auto"></a>
                  <span class="hidden sm:inline-block text-white text-sm sm:text-base font-semibold tracking-wide uppercase drop-shadow-lg">Get a Free Invoice in 60 Seconds</span>
         </div>
 

@@ -26,7 +26,7 @@
         <nav class="hidden lg:flex space-x-6 text-white font-medium">
             <a href="{{ url_for('main.index') }}" class="hover:text-[#60fdfd]">Home</a>
             <a href="{{ url_for('main.pricing') }}" class="hover:text-[#60fdfd]">Pricing</a>
-            <a href="#" class="hover:text-[#60fdfd]">Login</a>
+            <a href="{{ url_for('auth.login') }}" class="hover:text-[#60fdfd]">Login</a>
         </nav>
     </div>
 

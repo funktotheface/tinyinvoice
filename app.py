@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from routes.main import main_bp
 from routes.billing import billing_bp
 from livereload import Server
@@ -9,13 +11,15 @@ from flask_login import LoginManager
 from routes.auth import auth_bp
 
 
+
 app = Flask(__name__)
 app.config.from_object('config.Config')
 app.debug = True
 
+
 # initialize the shared db object with the app
 db.init_app(app)
-
+migrate = Migrate(app, db)
 #loginSystem
 login_manager = LoginManager(app)
 @login_manager.user_loader
@@ -55,8 +59,6 @@ if __name__ == '__main__':
         pass
 
     # Create tables if they don't exist
-    with app.app_context():
-        db.create_all()
 
     server = Server(app.wsgi_app)
     server.watch('templates/**/*.html')

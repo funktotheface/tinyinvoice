@@ -5,8 +5,8 @@ from routes.auth import auth_bp
 from livereload import Server
 
 # import the db and models defined in models.py
-from models import db, Invoice
-
+from models import db, Invoice, User
+from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -14,6 +14,12 @@ app.debug = True
 
 # initialize the shared db object with the app
 db.init_app(app)
+
+#loginSystem
+login_manager = LoginManager(app)
+@login_manager.user_loader
+def load_user(usser_id):
+    return User.query.get(int(usser_id))
 
 # Register blueprints
 app.register_blueprint(main_bp)

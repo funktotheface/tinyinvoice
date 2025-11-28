@@ -14,6 +14,11 @@ def index():
     return render_template('index.html')
 
 
+@main_bp.route('/pricing')
+def pricing():
+    return render_template('pricing.html')
+
+
 @main_bp.route('/generate', methods=['POST'])
 def generate_pdf():
     # Grab the form data

@@ -652,6 +652,13 @@
       }
     }
   }
+  .hover\:text-\[\#60fdfd\] {
+    &:hover {
+      @media (hover: hover) {
+        color: #60fdfd;
+      }
+    }
+  }
   .hover\:text-gray-300 {
     &:hover {
       @media (hover: hover) {

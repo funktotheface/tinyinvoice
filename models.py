@@ -32,8 +32,8 @@ class Invoice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    # Required: link invoice → user
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', name='fk_invoices_user_id'), nullable=False)
+    # Optional: link invoice → user (allow anonymous invoices)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', name='fk_invoices_user_id'), nullable=True)
 
     # Optional: store invoice total
     amount = db.Column(db.Float, default=0.0)

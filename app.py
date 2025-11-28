@@ -58,7 +58,9 @@ if __name__ == '__main__':
         # If instance_path cannot be created, fall back to current directory
         pass
 
-    # Create tables if they don't exist
+    # Create tables if they don't exist (helpful in development without migrations)
+    with app.app_context():
+        db.create_all()
 
     server = Server(app.wsgi_app)
     server.watch('templates/**/*.html')

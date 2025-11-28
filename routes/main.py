@@ -31,25 +31,39 @@ def generate_pdf():
     logo_path = os.path.join(current_app.root_path, 'static', 'media', 'img', 'templateLogo.png')
 
     try:
-        # 1. Create invoice
+        # Parse total safely (form fields come through as lists because flat=False)
+        raw_total = data.get('total', [0])
+        try:
+            amount = float(raw_total[0])
+        except Exception:
+            try:
+                amount = float(raw_total)
+            except Exception:
+                amount = 0.0
+
+        # 1. Create invoice (allow anonymous if user not logged in)
+        uid = current_user.id if hasattr(current_user, 'is_authenticated') and current_user.is_authenticated else None
         invoice = Invoice(
-            user_id=current_user.id,
-            amount=float(data.get("total", 0))  # or however you get the invoice total
+            user_id=uid,
+            amount=amount
         )
         db.session.add(invoice)
 
-        # 2. Update user stats (or create if first time)
-        stats = UserStats.query.filter_by(user_id=current_user.id).first()
-        if not stats:
-            stats = UserStats(user_id=current_user.id)
+        # 2. Update user stats only for authenticated users
+        if uid is not None:
+            stats = UserStats.query.filter_by(user_id=uid).first()
+            if not stats:
+                stats = UserStats(user_id=uid)
 
-        stats.total_invoices += 1
-        stats.total_invoiced_amount += invoice.amount
+            stats.total_invoices = (stats.total_invoices or 0) + 1
+            stats.total_invoiced_amount = (stats.total_invoiced_amount or 0.0) + invoice.amount
 
-        db.session.add(stats)
+            db.session.add(stats)
         db.session.commit()
 
-    except Exception:
+    except Exception as e:
+        # Log the exception so the real error is visible during debugging
+        current_app.logger.exception('Error creating invoice or updating stats')
         db.session.rollback()
 
     html = render_template('invoice_template.html', data=data, branding=True, logo_path=logo_path)

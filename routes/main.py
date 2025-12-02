@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, send_file, current_app
 from weasyprint  import HTML
 from flask_login import login_required, current_user
+from decimal import Decimal, ROUND_HALF_UP
 import  io, os
 
 # import DB model to record generated invoices
@@ -34,12 +35,12 @@ def generate_pdf():
         # Parse total safely (form fields come through as lists because flat=False)
         raw_total = data.get('total', [0])
         try:
-            amount = float(raw_total[0])
+            # Convert to Decimal via string to avoid binary float issues
+            amount = Decimal(str(raw_total[0])) if isinstance(raw_total, list) else Decimal(str(raw_total))
+            # Quantize to 2 decimal places using bankers/half-up rounding
+            amount = amount.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
         except Exception:
-            try:
-                amount = float(raw_total)
-            except Exception:
-                amount = 0.0
+            amount = Decimal('0.00')
 
         # 1. Create invoice (allow anonymous if user not logged in)
         uid = current_user.id if hasattr(current_user, 'is_authenticated') and current_user.is_authenticated else None
@@ -56,7 +57,8 @@ def generate_pdf():
                 stats = UserStats(user_id=uid)
 
             stats.total_invoices = (stats.total_invoices or 0) + 1
-            stats.total_invoiced_amount = (stats.total_invoiced_amount or 0.0) + invoice.amount
+            prev = stats.total_invoiced_amount or Decimal('0.00')
+            stats.total_invoiced_amount = prev + invoice.amount
 
             db.session.add(stats)
         db.session.commit()

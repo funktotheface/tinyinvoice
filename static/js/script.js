@@ -38,6 +38,38 @@ if (itemsTableEl) {
         if (totalField) totalField.value = total.toFixed(2);
     }
 
+      // Format price/quantity inputs to two decimals on focusout and on load
+      function formatMoneyInputs() {
+        // format existing price inputs
+        itemsTable.querySelectorAll('[name="item_price[]"]').forEach(inp => {
+          const v = parseFloat(inp.value) || 0;
+          inp.value = v.toFixed(2);
+        });
+        // format existing quantity inputs
+        itemsTable.querySelectorAll('[name="item_quantity[]"]').forEach(inp => {
+          const v = parseFloat(inp.value) || 0;
+          inp.value = v.toFixed(2);
+        });
+      }
+
+      // Run initial formatting once
+      formatMoneyInputs();
+
+      // Use focusout (bubbles) so dynamically added rows are covered
+      itemsTable.addEventListener('focusout', (e) => {
+        const t = e.target;
+        if (t.matches('[name="item_price[]"]')) {
+          const v = parseFloat(t.value) || 0;
+          t.value = v.toFixed(2);
+          updateTotal();
+        }
+        if (t.matches('[name="item_quantity[]"]')) {
+          const v = parseFloat(t.value) || 0;
+          t.value = v.toFixed(2);
+          updateTotal();
+        }
+      });
+
     // Add a new item row
     if (addItemBtn) {
         addItemBtn.addEventListener('click', () => {

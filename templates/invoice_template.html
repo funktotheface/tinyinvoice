@@ -28,24 +28,62 @@
       margin: 0;
     }
 
-    .branding {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      color: #aaa;
-      font-size: 14px;
+    /* PDF page and layout rules */
+    @page { size: A4; margin: 18mm; }
+
+    .branding { color: #aaa; font-size: 14px; }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+      position: relative; /* allow absolute-positioning the logo inside */
+      padding-right: 180px; /* reserve space for the logo at top-right */
     }
+
+    @media (min-width: 600px) {
+      .header { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+    }
+
+    .biz-name { font-size: 18px; font-weight: bold; overflow-wrap: break-word; word-break: break-word; }
+    .biz-sub { font-size: 12px; color: #333; overflow-wrap: break-word; }
+
+    .logo { position: absolute; right: 0; top: 0; }
+    .logo img { max-width: 160px; height: auto; display: block; }
+
+    /* On very small screens reduce the reserved space so content doesn't overflow */
+    @media (max-width: 360px) {
+      .header { padding-right: 120px; }
+      .logo img { max-width: 120px; }
+    }
+
+    /* Table responsiveness */
+    .description { overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+    .type-col { width: 36px; text-align: center; font-weight: 700; }
+    .numeric { width: 90px; text-align: right; }
+
+    th, td { vertical-align: top; }
+    thead { display: table-header-group; }
+    tr, td { page-break-inside: avoid; }
   </style>
 </head>
 
 <body>
   {% if branding %}
-  <img class="branding" src="file://{{ logo_path }}" alt="TinyInvoice Logo">
-  {% endif %}
-
-
-
-  <h1>{{ data['business_name'][0] }}</h1>
+  <div class="header">
+    <div class="biz">
+      <div class="biz-name">{{ data['business_name'][0] }}</div>
+      {% if data.get('business_address') %}
+      <div class="biz-sub">{{ data['business_address'][0] }}</div>
+      {% endif %}
+      <div class="biz-sub">Invoice for {{ data['client_name'][0] }}</div>
+      <div class="biz-sub">Date: {{ data['invoice_date'][0] }}</div>
+    </div>
+    {% if branding %}
+    <div class="logo"><img src="file://{{ logo_path }}" alt="TinyInvoice Logo"></div>
+    {% endif %}
+  </div>
   <br>
   <h2>Invoice for {{ data['client_name'][0] }}</h2>
   <p>Date: {{ data['invoice_date'][0] }}</p>
@@ -53,28 +91,31 @@
   <table>
     <thead>
       <tr>
-        <th>Description</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>before VAT</th>
-        <th>VAT</th>
-        <th>Line Total</th>
+        <th class="p-3 text-left text-sm font-semibold">Type</th>
+        <th class="description">Description</th>
+        <th class="numeric">Qty</th>
+        <th class="numeric">Price</th>
+        <th class="numeric">before VAT</th>
+        <th class="numeric">VAT</th>
+        <th class="numeric">Line Total</th>
       </tr>
     </thead>
     <tbody>
       {% for i in range(data['item_description']|length) %}
       <tr>
         {% set item_type = (data['item_type'][i] if 'item_type' in data else 'goods') %}
-        <td>{{ data['item_description'][i] }}</td>
-        <td>
+        {% set marker = 'S' if item_type == 'service' else 'G' %}
+        <td class="type-col" style="text-align:center; font-weight:bold;">{{ marker }}</td>
+        <td class="description">{{ data['item_description'][i] }}</td>
+        <td class="numeric">
           {{ data['item_quantity'][i] }}{% if item_type == 'service' %} hrs{% endif %}
         </td>
-        <td>
-          {% if item_type == 'service' %}£{{ data['item_price'][i] }} per hr{% else %}£{{ data['item_price'][i] }}{% endif %}
+        <td class="numeric">
+          {% if item_type == 'service' %}£{{ '%.2f' % (data['item_price'][i]|float) }} per hr{% else %}£{{ '%.2f' % (data['item_price'][i]|float) }}{% endif %}
         </td>
-        <td>{{ (data['item_quantity'][i]|float) * (data['item_price'][i]|float) | round(2) }}</td>
-        <td>{{ data['item_vat'][i] }}</td>
-        <td>{{ data['item_total'][i] }}</td>
+        <td class="numeric">£{{ '%.2f' % ((data['item_quantity'][i]|float) * (data['item_price'][i]|float)) }}</td>
+        <td class="numeric">£{{ '%.2f' % (data['item_vat'][i]|float) }}</td>
+        <td class="numeric">£{{ '%.2f' % (data['item_total'][i]|float) }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -87,7 +128,7 @@
   <table style="width:100%; margin-top:20px; border-collapse:collapse;">
     <tr>
       <td style="vertical-align:top;">
-        <h3>Total: {{ data['total'][0] }}</h3>
+        <h3>Total: £{{ '%.2f' % (data['total'][0]|float) }}</h3>
       </td>
       <td style="width:260px;"></td>
     </tr>
@@ -111,6 +152,7 @@
     <p style="margin:0;">Created by <a href="https://sitesbydoug.co.uk" style="color:#666; text-decoration:none;">SitesByDoug.co.uk</a></p>
     <p style="margin:0;">&copy; {{ data['invoice_date'][0][:4] if data.get('invoice_date') else '2025' }} SitesByDoug. All rights reserved.</p>
   </div>
+  {% endif %}
 </body>
 
 </html>

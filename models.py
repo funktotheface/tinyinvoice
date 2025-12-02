@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash 
@@ -35,8 +36,8 @@ class Invoice(db.Model):
     # Optional: link invoice → user (allow anonymous invoices)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', name='fk_invoices_user_id'), nullable=True)
 
-    # Optional: store invoice total
-    amount = db.Column(db.Float, default=0.0)
+    # Optional: store invoice total as fixed-point numeric (monetary)
+    amount = db.Column(db.Numeric(12, 2), default=Decimal('0.00'))
 
     # Relationship back to User
     user = db.relationship("User", back_populates="invoices")
@@ -50,7 +51,7 @@ class UserStats(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     total_invoices = db.Column(db.Integer, default=0)
-    total_invoiced_amount = db.Column(db.Float, default=0.0)
+    total_invoiced_amount = db.Column(db.Numeric(14, 2), default=Decimal('0.00'))
     last_updated = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship("User", back_populates="stats")

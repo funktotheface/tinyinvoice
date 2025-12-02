@@ -152,6 +152,50 @@ if (itemsTableEl) {
 
 }
 
+// Intercept invoice form submission: POST via Fetch, download PDF, then redirect to pricing
+const invoiceForm = document.getElementById('invoice-form');
+if (invoiceForm) {
+  invoiceForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const action = form.getAttribute('action') || window.location.href;
+    const fd = new FormData(form);
+
+    try {
+      const resp = await fetch(action, { method: 'POST', body: fd });
+      if (!resp.ok) throw new Error('Server returned ' + resp.status);
+
+      const blob = await resp.blob();
+      // Determine filename from Content-Disposition header if provided
+      let filename = 'invoice.pdf';
+      const cd = resp.headers.get('content-disposition');
+      if (cd) {
+        const m = cd.match(/filename\*=UTF-8''([^;\n\r]+)/) || cd.match(/filename="?([^";]+)"?/);
+        if (m && m[1]) filename = decodeURIComponent(m[1]);
+      }
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      // Append and click to trigger download
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      // Revoke URL shortly after and redirect to pricing
+      setTimeout(() => {
+        try { URL.revokeObjectURL(url); } catch (err) { /* ignore */ }
+        window.location.href = '/pricing';
+      }, 700);
+
+    } catch (err) {
+      console.error('Invoice generation failed:', err);
+      alert('Invoice generation failed. Please try again.');
+    }
+  });
+}
+
 particlesJS("particles-js", {
   "particles": {
     "number": {

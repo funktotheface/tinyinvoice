@@ -53,14 +53,11 @@ def generate_pdf():
         # 2. Update user stats only for authenticated users
         if uid is not None:
             stats = UserStats.query.filter_by(user_id=uid).first()
-            if not stats:
-                stats = UserStats(user_id=uid)
-
-            stats.total_invoices = (stats.total_invoices or 0) + 1
-            prev = stats.total_invoiced_amount or Decimal('0.00')
-            stats.total_invoiced_amount = prev + invoice.amount
-
-            db.session.add(stats)
+            if stats:
+                stats.total_invoices = (stats.total_invoices or 0) + 1
+                prev = stats.total_invoiced_amount or Decimal('0.00')
+                stats.total_invoiced_amount = prev + invoice.amount
+                db.session.add(stats)
         db.session.commit()
 
     except Exception as e:

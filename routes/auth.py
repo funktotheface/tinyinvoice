@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 from flask_login import login_user, logout_user, current_user
-from models import db, User
+from models import db, User, UserStats
 
 YOUR_GOOGLE_CLIENT_ID = "492092696854-rhr0b7vfttgi1podj7ro35hr43p2af9e.apps.googleusercontent.com"
 
@@ -26,6 +26,11 @@ def signup():
         user = User(email=email)
         user.set_password(password)
         db.session.add(user)
+        db.session.commit()
+
+        # Create empty UserStats for this new user
+        stats = UserStats(user_id=user.id)
+        db.session.add(stats)
         db.session.commit()
 
         login_user(user)
@@ -83,6 +88,7 @@ def google_onetap():
             if existing_email_user:
                 user = existing_email_user
                 user.google_sub = google_sub
+                db.session.commit()
             else:
                 # 3️⃣ Create a brand-new user
                 user = User(
@@ -91,8 +97,12 @@ def google_onetap():
                     password_hash=None
                 )
                 db.session.add(user)
+                db.session.commit()
 
-            db.session.commit()
+                # Create empty UserStats for this new user
+                stats = UserStats(user_id=user.id)
+                db.session.add(stats)
+                db.session.commit()
 
         login_user(user)
 

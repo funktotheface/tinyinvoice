@@ -23,10 +23,47 @@
     <a href="{{ url_for('auth.signup') }}" class="underline">Sign Up</a>
   </p>
 
+  <!-- Google One Tap / Sign-In button -->
+  <div id="google-signin-button" class="mt-4"></div>
+
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/cdnParticles.js') }}"></script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+  window.onload = function() {
+    google.accounts.id.initialize({
+      client_id: "{{ google_client_id }}",
+      callback: handleGoogleCredential
+    });
+
+    // Show One Tap automatically
+    google.accounts.id.prompt();
+
+    // Optional: render a visible Google button
+    google.accounts.id.renderButton(
+      document.getElementById("google-signin-button"),
+      { theme: "filled_blue", size: "large", text: "signin_with" }
+    );
+  };
+
+  function handleGoogleCredential(response) {
+    fetch("{{ url_for('auth.google_onetap') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ credential: response.credential })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success){
+        window.location.href = data.redirect || "{{ url_for('main.dashboard') }}";
+      } else {
+        console.error("Google login failed:", data.error);
+      }
+    });
+  }
+</script>
 {% endblock %}

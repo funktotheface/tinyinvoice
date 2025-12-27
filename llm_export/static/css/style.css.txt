@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* Base reset */
+body {
+  margin: 0;
+  background-color: #1c153a;
+}
+
+canvas {
+  display: block;
+}
+
+/* Particles background */
+#particles-js {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------
+   MOBILE (max-width: 640px)
+-------------------------------------------------- */
+@media (max-width: 640px) {
+
+  /* Disable particles on mobile for performance */
+
+  /* Slightly tighter invoice container */
+  .myContent {
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Make form elements easier to tap */
+  input, select, button {
+    font-size: 16px;
+  }
+
+  /* Buttons full width on mobile */
+  #add-item,
+  form button[type="submit"] {
+    width: 100%;
+  }
+
+  /* ------- Responsive Table (stacked rows) ------- */
+  table,
+  thead,
+  tbody,
+  th,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    background: white;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 1rem;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+  }
+
+  /* Labels shown using data-label on TD */
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-right: 1rem;
+  }
+
+  /* Inputs fill available mobile space */
+  td input,
+  td select {
+    width: 55%;
+  }
+
+  /* Remove-item button: bigger tap target */
+  .remove-item {
+    padding: 0.4rem 0.6rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    background: rgba(255, 235, 238, 0.9);
+    color: #b91c1c;
+  }
+
+  /* Hide navbar by default */
+  header#main-header nav {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------
+   DESKTOP (≥ 1024px)
+-------------------------------------------------- */
+@media (min-width: 1024px) {
+  /* Bank column width constraints */
+  .bank-column input {
+    width: 220px;
+  }
+}
+
+
+/* ---- Mobile stacking for table ---- */
+@media (max-width: 640px) {
+  /* Hide the table header */
+  table thead {
+    display: none;
+  }
+
+  /* Stack table rows as cards */
+  tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Stack cells vertically */
+  tbody td {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Label above input */
+  tbody td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+    color: #1e3a8a; /* Tailwind blue-900 */
+    margin-bottom: 0.25rem;
+  }
+
+  /* Make inputs take full width */
+  tbody td input,
+  tbody td select {
+    width: 100%;
+  }
+
+  /* Remove button full width (optional for better touch targets) */
+  tbody td .remove-item {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 0.25rem;
+  }
+}

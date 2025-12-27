@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+    }
+
+    /* PDF page and layout rules */
+    @page { size: A4; margin: 18mm; }
+
+    .branding { color: #aaa; font-size: 14px; }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+      position: relative; /* allow absolute-positioning the logo inside */
+      padding-right: 180px; /* reserve space for the logo at top-right */
+    }
+
+    @media (min-width: 600px) {
+      .header { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+    }
+
+    .biz-name { font-size: 18px; font-weight: bold; overflow-wrap: break-word; word-break: break-word; }
+    .biz-sub { font-size: 12px; color: #333; overflow-wrap: break-word; }
+
+    .logo { position: absolute; right: 0; top: 0; }
+    .logo img { max-width: 160px; height: auto; display: block; }
+
+    /* On very small screens reduce the reserved space so content doesn't overflow */
+    @media (max-width: 360px) {
+      .header { padding-right: 120px; }
+      .logo img { max-width: 120px; }
+    }
+
+    /* Table responsiveness */
+    .description { overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+    .type-col { width: 36px; text-align: center; font-weight: 700; }
+    .numeric { width: 90px; text-align: right; }
+
+    th, td { vertical-align: top; }
+    thead { display: table-header-group; }
+    tr, td { page-break-inside: avoid; }
+  </style>
+</head>
+
+<body>
+  {% if branding %}
+  <div class="header">
+    <div class="biz">
+      <div class="biz-name">{{ data['business_name'][0] }}</div>
+      {% if data.get('business_address') %}
+      <div class="biz-sub">{{ data['business_address'][0] }}</div>
+      {% endif %}
+      <div class="biz-sub">Invoice for {{ data['client_name'][0] }}</div>
+      <div class="biz-sub">Date: {{ data['invoice_date'][0] }}</div>
+    </div>
+    {% if branding %}
+    <div class="logo"><img src="file://{{ logo_path }}" alt="TinyInvoice Logo"></div>
+    {% endif %}
+  </div>
+  <br>
+  <h2>Invoice for {{ data['client_name'][0] }}</h2>
+  <p>Date: {{ data['invoice_date'][0] }}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="p-3 text-left text-sm font-semibold">Type</th>
+        <th class="description">Description</th>
+        <th class="numeric">Qty</th>
+        <th class="numeric">Price</th>
+        <th class="numeric">before VAT</th>
+        <th class="numeric">VAT</th>
+        <th class="numeric">Line Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in range(data['item_description']|length) %}
+      <tr>
+        {% set item_type = (data['item_type'][i] if 'item_type' in data else 'goods') %}
+        {% set marker = 'S' if item_type == 'service' else 'G' %}
+        <td class="type-col" style="text-align:center; font-weight:bold;">{{ marker }}</td>
+        <td class="description">{{ data['item_description'][i] }}</td>
+        <td class="numeric">
+          {{ data['item_quantity'][i] }}{% if item_type == 'service' %} hrs{% endif %}
+        </td>
+        <td class="numeric">
+          {% if item_type == 'service' %}£{{ '%.2f' % (data['item_price'][i]|float) }} per hr{% else %}£{{ '%.2f' % (data['item_price'][i]|float) }}{% endif %}
+        </td>
+        <td class="numeric">£{{ '%.2f' % ((data['item_quantity'][i]|float) * (data['item_price'][i]|float)) }}</td>
+        <td class="numeric">£{{ '%.2f' % (data['item_vat'][i]|float) }}</td>
+        <td class="numeric">£{{ '%.2f' % (data['item_total'][i]|float) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% set bank_name = (data['bank_account_holder'][0] if 'bank_account_holder' in data else '') %}
+  {% set bank_number = (data['bank_account_number'][0] if 'bank_account_number' in data else '') %}
+  {% set bank_sort = (data['bank_sort_code'][0] if 'bank_sort_code' in data else '') %}
+
+  <table style="width:100%; margin-top:20px; border-collapse:collapse;">
+    <tr>
+      <td style="vertical-align:top;">
+        <h3>Total: £{{ '%.2f' % (data['total'][0]|float) }}</h3>
+      </td>
+      <td style="width:260px;"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td style="text-align:right; vertical-align:top;">
+        {% if bank_name or bank_number or bank_sort %}
+        <h3 style="margin:0 0 6px 0;">Bank details</h3>
+        <p style="margin:0;">
+          {% if bank_name %}<strong>Account holder:</strong> {{ bank_name }}<br>{% endif %}
+          {% if bank_number %}<strong>Account number:</strong> {{ bank_number }}<br>{% endif %}
+          {% if bank_sort %}<strong>Sort code:</strong> {{ bank_sort }}{% endif %}
+        </p>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+  
+  <!-- Small footer: creator and copyright -->
+  <div style="margin-top:28px; font-size:12px; color:#666; text-align:center;">
+    <p style="margin:0;">Created by <a href="https://sitesbydoug.co.uk" style="color:#666; text-decoration:none;">SitesByDoug.co.uk</a></p>
+    <p style="margin:0;">&copy; {{ data['invoice_date'][0][:4] if data.get('invoice_date') else '2025' }} SitesByDoug. All rights reserved.</p>
+  </div>
+  {% endif %}
+</body>
+
+</html>

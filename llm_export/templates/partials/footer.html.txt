@@ -1,0 +1,5 @@
+<footer class="mt-8">
+  <div class="max-w-7xl mx-auto px-4 py-4 text-center">
+    <span class="text-white text-base sm:text-lg font-semibold">Invoices generated: <strong class="text-white">{{ invoice_count }}</strong></span>
+  </div>
+</footer>

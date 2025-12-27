@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="492092696854-rhr0b7vfttgi1podj7ro35hr43p2af9e.apps.googleusercontent.com">
+
+    <title>TinyInvoice - invoices in 60 seconds!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="pt-4 px-4 sm:px-8">
+
+    {% include 'partials/header.html' %}
+    <div id="particles-js"></div>
+    <main class="p-6 max-w-8xl mx-auto">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% include 'partials/footer.html' %}
+    {% block scripts %}
+    {% endblock %}
+
+
+</body>
+
+</html>

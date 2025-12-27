@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-20 bg-white/10 backdrop-blur p-8 rounded-2xl text-white">
+
+  <h2 class="text-3xl font-bold mb-6 text-center">Create Account</h2>
+
+  <form method="POST" class="space-y-4">
+    <input type="email" name="email" placeholder="Email" 
+           class="w-full p-3 rounded bg-white/20 text-white" required>
+
+    <input type="password" name="password" placeholder="Password" 
+           class="w-full p-3 rounded bg-white/20 text-white" required>
+
+    <button type="submit"
+            class="w-full bg-white/20 hover:bg-white/30 py-2 rounded-xl font-semibold">
+      Sign Up
+    </button>
+  </form>
+
+  <p class="mt-4 text-center text-gray-300">
+    Already have an account?  
+    <a href="{{ url_for('auth.login') }}" class="underline">Login</a>
+  </p>
+
+</div>
+{% endblock %}

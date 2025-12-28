@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="particles-js"></div>
+
+<div class="max-w-2xl mx-auto p-4 sm:p-8">
+
+  <!-- Header -->
+  <div class="text-white text-center mb-8">
+    <h1 class="text-3xl font-bold mb-2">Complete Your Payment</h1>
+    <p class="text-gray-300">Secure payment powered by Stripe</p>
+  </div>
+
+  <!-- Payment Form Container -->
+  <div class="bg-white/10 backdrop-blur-[3px] rounded-2xl p-8 text-white border border-white/10">
+    
+    <!-- Order Summary -->
+    <div class="bg-white/5 rounded-xl p-6 mb-8 border border-white/10">
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-gray-300">TinyInvoice Pro (4-month cycle)</span>
+        <span class="font-bold">£4.99</span>
+      </div>
+      <div class="border-t border-white/10 pt-4 flex justify-between items-center">
+        <span class="font-bold">Total</span>
+        <span class="text-2xl font-bold text-cyan-400">£4.99</span>
+      </div>
+    </div>
+
+    <!-- Stripe Payment Element Container -->
+    <form id="payment-form">
+      <div id="payment-element" class="mb-6">
+        <!-- Stripe Payment Element will be inserted here -->
+      </div>
+
+      <button id="submit" type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-xl transition disabled:opacity-50" disabled>
+        <span id="button-text">Pay £4.99</span>
+      </button>
+
+      <!-- Error message display -->
+      <div id="payment-message" class="text-red-400 mt-4 hidden"></div>
+    </form>
+
+    <!-- Security Note -->
+    <div class="text-center mt-8 text-sm text-gray-400">
+      <p>🔒 Your payment is secure and encrypted</p>
+      <p class="mt-2">We use Stripe for secure payment processing</p>
+    </div>
+  </div>
+
+  <!-- Help Link -->
+  <div class="text-center mt-8">
+    <a href="{{ url_for('billing.upgrade') }}" class="text-cyan-400 hover:text-cyan-300 text-sm">← Back to upgrade options</a>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cdnParticles.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+  const stripe = Stripe("{{ stripe_public_key }}");
+  const clientSecret = "{{ client_secret }}";
+
+  // Create and mount the Payment Element
+  const elements = stripe.elements({ clientSecret });
+  const paymentElement = elements.create("payment");
+  paymentElement.mount("#payment-element");
+
+  // Handle form submission
+  document.getElementById("payment-form").addEventListener("submit", handleSubmit);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    const { setupIntent, error } = await stripe.confirmSetup({
+      elements,
+      redirect: "if_required",
+    });
+
+    if (error) {
+      showMessage(error.message);
+      setLoading(false);
+    } else {
+      // SetupIntent succeeded, now create the subscription on the server
+      const response = await fetch("{{ url_for('billing.stripe_checkout_complete') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ setup_intent_id: setupIntent.id })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showMessage(data.error || "Subscription creation failed");
+        setLoading(false);
+      } else {
+        // Redirect to dashboard
+        window.location.href = data.redirect;
+      }
+    }
+  }
+
+  function showMessage(messageText) {
+    const messageContainer = document.querySelector("#payment-message");
+    messageContainer.classList.remove("hidden");
+    messageContainer.textContent = messageText;
+  }
+
+  function setLoading(isLoading) {
+    if (isLoading) {
+      document.querySelector("#submit").disabled = true;
+      document.querySelector("#button-text").textContent = "Processing...";
+    } else {
+      document.querySelector("#submit").disabled = false;
+      document.querySelector("#button-text").textContent = "Pay £4.99";
+    }
+  }
+</script>
+
+{% endblock %}

@@ -18,7 +18,14 @@ def index():
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    stats = UserStats.query.filter_by(user_id=current_user.id).first()
+    invoices = (
+        Invoice.query.filter_by(user_id=current_user.id)
+        .order_by(Invoice.created_at.desc())
+        .limit(5)
+        .all()
+    )
+    return render_template('dashboard.html', stats=stats, invoices=invoices)
 
 @main_bp.route('/pricing')
 def pricing():

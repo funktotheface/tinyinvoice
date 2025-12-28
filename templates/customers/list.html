@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="particles-js"></div>
+
+<div class="max-w-6xl mx-auto p-4 sm:p-8 space-y-8">
+
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div class="text-white">
+      <h1 class="text-4xl font-bold">Saved Customers</h1>
+      <p class="text-gray-300 mt-2">Manage and organize your client information</p>
+    </div>
+    <a href="{{ url_for('customers.create_customer') }}" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-6 rounded-xl transition whitespace-nowrap">
+      + Add Customer
+    </a>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="bg-white/10 backdrop-blur-[3px] rounded-2xl p-6 text-white border border-white/10">
+    <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <input 
+          type="text" 
+          name="q" 
+          value="{{ search_query }}" 
+          placeholder="Search by name or email..." 
+          class="w-full p-3 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 border border-white/10"
+        >
+      </div>
+      
+      <div>
+        <select name="tag" class="w-full p-3 rounded-lg bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 border border-white/10">
+          <option value="">All Tags</option>
+          {% for tag in all_tags %}
+            <option value="{{ tag }}" {% if tag == tag_filter %}selected{% endif %}>{{ tag }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="flex gap-2">
+        <button type="submit" class="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg transition">
+          🔍 Search
+        </button>
+        {% if search_query or tag_filter %}
+          <a href="{{ url_for('customers.list_customers') }}" class="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-4 rounded-lg transition text-center">
+            Clear
+          </a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Customers List -->
+  {% if customers %}
+    <div class="space-y-4">
+      {% for customer in customers %}
+        <div class="bg-white/10 backdrop-blur-[3px] rounded-2xl p-6 text-white border border-white/10 hover:border-cyan-400/30 transition">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+            <!-- Customer Info -->
+            <div>
+              <p class="text-gray-400 text-sm">ID: #{{ customer.customer_number }}</p>
+              <h3 class="text-xl font-bold">{{ customer.name }}</h3>
+              <p class="text-gray-400">{{ customer.email }}</p>
+              {% if customer.phone %}
+                <p class="text-gray-400 text-sm">📱 {{ customer.phone }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Address & Custom Field (Mobile-friendly) -->
+            <div class="hidden md:block">
+              {% if customer.address %}
+                <p class="text-gray-400 text-sm">Address</p>
+                <p class="text-white text-sm break-words">{{ customer.address }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Tags & Actions (Mobile-friendly) -->
+            <div class="flex flex-col justify-between">
+              {% if customer.tags %}
+                <div class="mb-4">
+                  <p class="text-gray-400 text-sm mb-2">Tags</p>
+                  <div class="flex flex-wrap gap-2">
+                    {% for tag in customer.tags.split(',') %}
+                      <span class="bg-cyan-500/20 text-cyan-300 text-xs px-3 py-1 rounded-full border border-cyan-400/30">
+                        {{ tag.strip() }}
+                      </span>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+
+              <!-- Actions -->
+              <div class="flex gap-2 flex-wrap">
+                <a href="{{ url_for('customers.edit_customer', customer_id=customer.id) }}" class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 font-bold py-2 px-4 rounded-lg transition text-sm">
+                  ✏️ Edit
+                </a>
+                <form method="POST" action="{{ url_for('customers.delete_customer', customer_id=customer.id) }}" class="inline" onsubmit="return confirm('Delete this customer?');">
+                  <button type="submit" class="bg-red-500/20 hover:bg-red-500/30 text-red-300 font-bold py-2 px-4 rounded-lg transition text-sm">
+                    🗑️ Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile: Show address & custom field -->
+          <div class="md:hidden border-t border-white/10 pt-4 text-sm text-gray-400">
+            {% if customer.address %}
+              <p><strong>Address:</strong> {{ customer.address }}</p>
+            {% endif %}
+            {% if customer.user_field %}
+              <p><strong>Custom Field:</strong> {{ customer.user_field }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="bg-white/10 backdrop-blur-[3px] rounded-2xl p-12 text-center text-white border border-white/10">
+      <p class="text-xl mb-4">{% if search_query or tag_filter %}No customers found{% else %}No saved customers yet{% endif %}</p>
+      {% if not (search_query or tag_filter) %}
+        <p class="text-gray-400 mb-6">Start by adding your first customer to streamline future invoices.</p>
+        <a href="{{ url_for('customers.create_customer') }}" class="inline-block bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-6 rounded-xl transition">
+          + Add Your First Customer
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cdnParticles.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

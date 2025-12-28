@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+venv/
+*.pyc
+
+# Node
+node_modules/
+
+# Environment
+.env
+
+# SQLite instance data
+instance/
+*.db
+
+# Cache / build
+*.log
+*.cache
+
+# VSCode
+.vscode/

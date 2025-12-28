@@ -1,8 +1,11 @@
 from flask import Flask
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from routes.main import main_bp
 from routes.billing import billing_bp
+from routes.customers import customers_bp
+from routes.quotes import quotes_bp
 from livereload import Server
 
 # import the db and models defined in models.py
@@ -12,6 +15,7 @@ from routes.auth import auth_bp
 
 
 
+load_dotenv()  # Load environment variables from .env in development
 app = Flask(__name__)
 app.config.from_object('config.Config')
 app.debug = True
@@ -29,6 +33,8 @@ def load_user(user_id):
 # Register blueprints
 app.register_blueprint(main_bp)
 app.register_blueprint(billing_bp)
+app.register_blueprint(customers_bp)
+app.register_blueprint(quotes_bp)
 app.register_blueprint(auth_bp)
 
 
@@ -41,12 +47,6 @@ def inject_invoice_count():
     except Exception:
         count = 0
     return {'invoice_count': count}
-
-
-# Temp root route
-@app.route('/')
-def home():
-    return "<h1>TinyInvoice is running!</h1>"
 
 
 if __name__ == '__main__':

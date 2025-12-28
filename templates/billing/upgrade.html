@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="particles-js"></div>
+
+<div class="max-w-4xl mx-auto p-4 sm:p-8 space-y-8">
+
+  <!-- Header -->
+  <div class="text-white text-center">
+    <h1 class="text-4xl font-bold mb-4">Upgrade to Pro</h1>
+    <p class="text-xl text-gray-300">Unlock powerful features to grow your business.</p>
+  </div>
+
+  <!-- Features Comparison -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- Free Plan -->
+    <div class="bg-white/10 backdrop-blur-[3px] rounded-2xl p-6 text-white border border-white/10">
+      <h3 class="text-2xl font-bold mb-4">Free</h3>
+      <p class="text-gray-400 mb-6">Your current plan</p>
+      <ul class="space-y-3 mb-8 text-sm">
+        <li class="flex items-start">
+          <span class="mr-3">✅</span>
+          <span>Generate branded PDFs</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3">✅</span>
+          <span>Unlimited invoices</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3">✅</span>
+          <span>Basic invoice preview</span>
+        </li>
+      </ul>
+      <p class="text-2xl font-bold">Free</p>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-[3px] rounded-2xl p-6 text-white border-2 border-cyan-400/50 transform md:scale-105">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-2xl font-bold">Pro</h3>
+        <span class="bg-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
+      </div>
+      <p class="text-gray-300 mb-6 text-sm">All the tools you need</p>
+      <ul class="space-y-3 mb-8 text-sm">
+        <li class="flex items-start">
+          <span class="mr-3 text-cyan-400">✅</span>
+          <span>Everything in Free +</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3 text-cyan-400">✅</span>
+          <span>Saved customers</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3 text-cyan-400">✅</span>
+          <span>Auto-increment invoice numbers</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3 text-cyan-400">✅</span>
+          <span>Custom branding</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3 text-cyan-400">✅</span>
+          <span>Full dashboard</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3 text-cyan-400">✅</span>
+          <span>Generate quotes</span>
+        </li>
+        <li class="flex items-start">
+          <span class="mr-3 text-cyan-400">✅</span>
+          <span>Convert quotes to invoices</span>
+        </li>
+      </ul>
+      <p class="text-3xl font-bold mb-2">£4.99 <span class="text-lg text-gray-400">/ month</span></p>
+      <p class="text-xs text-gray-400 mb-6">Billed every 4 months. Cancel anytime.</p>
+    </div>
+
+  </div>
+
+  <!-- Payment Methods -->
+  <div class="bg-white/10 backdrop-blur-[3px] rounded-2xl p-8 text-white border border-white/10">
+    <h3 class="text-2xl font-bold mb-8 text-center">Choose a Payment Method</h3>
+    
+    <form method="POST" class="space-y-6">
+      <!-- Stripe Option -->
+      <label class="block p-6 bg-white/5 rounded-xl border-2 border-white/10 hover:border-cyan-400/50 cursor-pointer transition">
+        <div class="flex items-start">
+          <input type="radio" name="payment_method" value="stripe" class="mt-1 mr-4" required>
+          <div>
+            <h4 class="font-bold text-lg">💳 Stripe (Recommended)</h4>
+            <p class="text-sm text-gray-400 mt-1">Pay with credit/debit card or PayPal</p>
+            <p class="text-xs text-gray-500 mt-2">Secure payment processing • Fast checkout</p>
+          </div>
+        </div>
+      </label>
+
+      <!-- PayPal Option -->
+      <label class="block p-6 bg-white/5 rounded-xl border-2 border-white/10 hover:border-cyan-400/50 cursor-pointer transition opacity-50">
+        <div class="flex items-start">
+          <input type="radio" name="payment_method" value="paypal" class="mt-1 mr-4" disabled>
+          <div>
+            <h4 class="font-bold text-lg">🅿️ PayPal</h4>
+            <p class="text-sm text-gray-400 mt-1">Pay securely with PayPal account</p>
+            <p class="text-xs text-gray-500 mt-2">Coming soon</p>
+          </div>
+        </div>
+      </label>
+
+      <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-xl transition transform hover:scale-105">
+        Continue to Payment →
+      </button>
+    </form>
+  </div>
+
+  <!-- Trust & Security -->
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="text-center text-gray-300">
+      <p class="text-2xl mb-2">🔒</p>
+      <p class="text-sm">Secure & Encrypted</p>
+    </div>
+    <div class="text-center text-gray-300">
+      <p class="text-2xl mb-2">⏰</p>
+      <p class="text-sm">Cancel Anytime</p>
+    </div>
+    <div class="text-center text-gray-300">
+      <p class="text-2xl mb-2">📧</p>
+      <p class="text-sm">Instant Confirmation</p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="bg-white/10 backdrop-blur-[3px] rounded-2xl p-8 text-white border border-white/10">
+    <h3 class="text-2xl font-bold mb-6">Frequently Asked Questions</h3>
+    
+    <div class="space-y-4">
+      <details class="group cursor-pointer">
+        <summary class="font-semibold text-lg py-3 border-b border-white/10 flex justify-between items-center">
+          <span>How long is the billing cycle?</span>
+          <span class="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p class="text-gray-400 py-3">We bill you every 4 months (120 days) so you can plan ahead and take advantage of longer billing periods with peace of mind.</p>
+      </details>
+
+      <details class="group cursor-pointer">
+        <summary class="font-semibold text-lg py-3 border-b border-white/10 flex justify-between items-center">
+          <span>Can I cancel my subscription?</span>
+          <span class="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p class="text-gray-400 py-3">Yes! You can cancel anytime from your account settings. You'll keep Pro access until the end of your current billing period.</p>
+      </details>
+
+      <details class="group cursor-pointer">
+        <summary class="font-semibold text-lg py-3 border-b border-white/10 flex justify-between items-center">
+          <span>What if I want to downgrade?</span>
+          <span class="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p class="text-gray-400 py-3">Cancel anytime and your account will revert to Free tier at the end of your billing period. All your invoices and data remain accessible.</p>
+      </details>
+
+      <details class="group cursor-pointer">
+        <summary class="font-semibold text-lg py-3 border-b border-white/10 flex justify-between items-center">
+          <span>Is my payment information secure?</span>
+          <span class="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p class="text-gray-400 py-3">We use industry-standard encryption and tokenization through Stripe. Your payment details are never stored on our servers—they're secured by Stripe's PCI-compliant infrastructure.</p>
+      </details>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cdnParticles.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

@@ -9,6 +9,21 @@
     <title>TinyInvoice - invoices in 60 seconds!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {# Social preview meta tags: Open Graph + Twitter #}
+    {% block meta_social %}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="TinyInvoice">
+    <meta property="og:title" content="TinyInvoice – Invoices in 60 seconds!">
+    <meta property="og:description" content="Create and send professional invoices or quotes in seconds. Simple, fast, and free to start.">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='media/img/tinyInvoiceWp.png', _external=True) }}">
+    <meta property="og:image:type" content="image/png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TinyInvoice – Invoices in 60 seconds!">
+    <meta name="twitter:description" content="Create and send professional invoices or quotes in seconds.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='media/img/tinyInvoiceWp.png', _external=True) }}">
+    {% endblock %}
 </head>
 
 <body class="pt-4 px-4 sm:px-8">
